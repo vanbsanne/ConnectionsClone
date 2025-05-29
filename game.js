@@ -35,8 +35,8 @@ var wordBlocks = document.querySelectorAll('.word');
 
 function wordBlockLoadWords() {
     let wordBlockList = [];
-    categories.forEach(group => {
-        group.words.forEach(word => {
+    categories.forEach(category => {
+        category.words.forEach(word => {
             wordBlockList.push(word);
         });
     });
