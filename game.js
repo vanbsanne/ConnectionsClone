@@ -5,15 +5,16 @@ const options = { year: 'numeric', month: 'long', day: 'numeric' };
 const formattedDate = date.toLocaleDateString('en-US', options);
 dateTitle.innerText = formattedDate;
 
-let groups = [];
-var words = document.querySelectorAll('.word');
+
+//load 4 categories
+let categories = [];
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
 
-function selectCategories() {
-    let max = categories.length;
+function loadCategories() {
+    let max = initialCategories.length;
     let randomNumbers = new Set([]);
 
     while (randomNumbers.size < 4) {
@@ -23,14 +24,18 @@ function selectCategories() {
     console.log(randomNumbers.values()[0]);
 
     for (let number of randomNumbers) {
-        groups.push(categories[number]);
+        categories.push(initialCategories[number]);
     }
-    console.log("set: ", randomNumbers, groups)
+    console.log("set: ", randomNumbers, categories)
 }
+
+
+//populate word blocks 
+var wordBlocks = document.querySelectorAll('.word');
 
 function wordBlockLoadWords() {
     let wordBlockList = [];
-    groups.forEach(group => {
+    categories.forEach(group => {
         group.words.forEach(word => {
             wordBlockList.push(word);
         });
@@ -38,26 +43,18 @@ function wordBlockLoadWords() {
     console.log(wordBlockList);
 }
 
-
-
-
-
-
-
+//change colors when word block is selected 
 function toggleWordsSelected(event) {
     // Get clicked word
     let clickedWord = event.target;
     console.log(clickedWord);
 
-    // Change color of clicked word
-    // Add "selected" css class
     clickedWord.classList.toggle("selected");
 }
 
-words.forEach(word => {
+wordBlocks.forEach(word => {
     word.addEventListener('click', toggleWordsSelected);
 });
 
-
-selectCategories();
+loadCategories();
 wordBlockLoadWords();

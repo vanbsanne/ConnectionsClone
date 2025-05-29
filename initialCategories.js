@@ -1,4 +1,4 @@
-const categories = [
+const initialCategories = [
     {
         group: "Vehicles",
         words: [
