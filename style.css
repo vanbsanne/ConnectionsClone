@@ -17,6 +17,8 @@ body {
 
 h1 {
     font-size: 2rem;
+    margin: 0;
+    margin-left: 10%;
 }
 
 p {
@@ -43,4 +45,33 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.selected {
+    background-color: #5a5a5a;
+    color: white;
+}
+
+.date {
+    font-weight: normal;
+    margin-left: 2em;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+}
+
+button {
+    padding: 0.5rem;
+    border-radius: 100px;
+    color: black;
+    border: 1px solid black;
+    background-color: white;
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.clicked {
+    opacity: 1;
 }
