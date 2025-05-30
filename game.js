@@ -59,6 +59,9 @@ function toggleWordsSelected(event) {
     console.log(clickedWord);
 
     clickedWord.classList.toggle("selected");
+
+    // check every element in list with class selected, if more than 4 enable submit button and disable clicking possible on words
+
 }
 
 wordBlocks.forEach(word => {
@@ -82,6 +85,9 @@ function shuffleArray(array) {
 
     return array;
 }
+
+let shuffleButton = document.getElementById("shuffle");
+shuffleButton.addEventListener("click", wordBlockLoadWords)
 
 loadCategories();
 wordBlockLoadWords();
