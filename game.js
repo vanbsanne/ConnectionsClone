@@ -47,7 +47,9 @@ function wordBlockLoadWords() {
     console.log(wordList);
 
     // Put words from wordList into wordBlocks
-
+    for (let i = 0; i < wordBlocks.length; i++) {
+        wordBlocks[i].innerText = wordList[i];
+    }
 }
 
 //change colors when word block is selected 
