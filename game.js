@@ -32,15 +32,28 @@ function loadCategories() {
 
 //populate word blocks 
 var wordBlocks = document.querySelectorAll('.word');
+let wordList = [];
+
 
 function wordBlockLoadWords() {
     // Load wordList
-    let wordList = [];
+
     categories.forEach(category => {
         category.words.forEach(word => {
-            wordList.push(word);
+            wordList.push({ word: word, group: category.group });
         });
     });
+
+    // [
+    //     {
+    //         word: "woord1",
+    //         category: "categorie1"
+    //     }, // index 0
+    //     {
+    //         word: "woord1",
+    //         category: "categorie1"
+    //     } // index 1
+    // ]
 
     // Shuffle wordList
     wordList = shuffleArray(wordList);
@@ -48,7 +61,7 @@ function wordBlockLoadWords() {
 
     // Put words from wordList into wordBlocks
     for (let i = 0; i < wordBlocks.length; i++) {
-        wordBlocks[i].innerText = wordList[i];
+        wordBlocks[i].innerText = wordList[i].word;
     }
 }
 
@@ -56,29 +69,76 @@ function wordBlockLoadWords() {
 function toggleWordsSelected(event) {
     // Get clicked word
     let clickedWord = event.target;
-    console.log(clickedWord);
 
     clickedWord.classList.toggle("selected");
 
     // check every element in list with class selected, if more than 4 enable submit button and disable clicking possible on words
-    let selectedWords = document.querySelectorAll('.selected');
     let wrapper = document.getElementById("wrapper");
 
-    if (selectedWords.length == 4) {
+    selectedWordBlocks = document.querySelectorAll('.selected');
+
+    console.log('selectedWordBlocks', selectedWordBlocks);
+
+    if (selectedWordBlocks.length == 4) {
         console.log("removing disabled from button");
 
         submitButton.disabled = false;
         wrapper.classList.add("saturated");
     } else {
+        console.log("adding disabled to button");
         submitButton.disabled = true;
         wrapper.classList.remove("saturated");
     }
-    console.log(selectedWords);
 }
 
 function checkAnswers() {
     //check if all 4 words have the same category 
     // if three are correct give popup one away...
+    //selecedwords en wordlist aanspreken
+    let selectedCategories = [];
+    selectedWordBlocks.forEach(wordBlock => {
+        let word = wordBlock.innerText;
+
+        let wordItem = wordList.find(wordItem => {
+            console.log('find word', word)
+            console.log('find wordItem', wordItem);
+            return wordItem.word.toLowerCase() == word.toLowerCase();
+        })
+
+        let group = wordItem.group;
+
+        selectedCategories.push(group);
+    });
+
+    console.log('selectedCategories', selectedCategories);
+
+
+    let biggestCategoryCount = 0;
+    let biggestCategoryName = "";
+
+    selectedCategories.forEach(category => {
+        let filteredCategories = selectedCategories.filter(categoryName => {
+            return category == categoryName;
+        });
+
+        console.log('filteredCategories', filteredCategories);
+
+        if (filteredCategories.length > biggestCategoryCount) {
+            biggestCategoryName = category;
+            biggestCategoryCount = filteredCategories.length;
+        }
+
+
+    });
+    console.log('biggesty category', biggestCategoryName, biggestCategoryCount);
+
+    if (biggestCategoryCount == 3) {
+        window.alert("One away...");
+    } else if (biggestCategoryCount == 4) {
+        window.alert("Correct!");
+        // CHange colors of correct divs (with mult solved classes in css) + deselect and disable submit button again
+    }
+
 }
 
 wordBlocks.forEach(word => {
@@ -105,6 +165,7 @@ function shuffleArray(array) {
 
 let shuffleButton = document.getElementById("shuffle");
 let submitButton = document.getElementById("submit");
+let selectedWordBlocks = document.querySelectorAll('.selected');
 shuffleButton.addEventListener("click", wordBlockLoadWords);
 submitButton.addEventListener("click", checkAnswers);
 
