@@ -61,7 +61,24 @@ function toggleWordsSelected(event) {
     clickedWord.classList.toggle("selected");
 
     // check every element in list with class selected, if more than 4 enable submit button and disable clicking possible on words
+    let selectedWords = document.querySelectorAll('.selected');
+    let wrapper = document.getElementById("wrapper");
 
+    if (selectedWords.length == 4) {
+        console.log("removing disabled from button");
+
+        submitButton.disabled = false;
+        wrapper.classList.add("saturated");
+    } else {
+        submitButton.disabled = true;
+        wrapper.classList.remove("saturated");
+    }
+    console.log(selectedWords);
+}
+
+function checkAnswers() {
+    //check if all 4 words have the same category 
+    // if three are correct give popup one away...
 }
 
 wordBlocks.forEach(word => {
@@ -87,7 +104,9 @@ function shuffleArray(array) {
 }
 
 let shuffleButton = document.getElementById("shuffle");
-shuffleButton.addEventListener("click", wordBlockLoadWords)
+let submitButton = document.getElementById("submit");
+shuffleButton.addEventListener("click", wordBlockLoadWords);
+submitButton.addEventListener("click", checkAnswers);
 
 loadCategories();
 wordBlockLoadWords();

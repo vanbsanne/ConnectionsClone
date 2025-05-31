@@ -73,3 +73,8 @@ button {
 button:disabled {
     opacity: 0.4;
 }
+
+.saturated>.row>.word:not(.selected) {
+    cursor: not-allowed;
+    pointer-events: none;
+}
