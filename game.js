@@ -37,6 +37,7 @@ let wordList = [];
 
 function wordBlockLoadWords() {
     // Load wordList
+    wordList = [];
 
     categories.forEach(category => {
         category.words.forEach(word => {
@@ -56,14 +57,77 @@ function wordBlockLoadWords() {
     // ]
 
     // Shuffle wordList
+    solvedWordBlocks = document.querySelectorAll(".solved");
+    let solvedWords = [];
+    solvedWordBlocks.forEach(element => {
+        solvedWords.push({ word: element.innerText, color: getColor(element) });
+    });
+    console.log("solvedWords", solvedWords);
+
+    // remove all colors
+    wordBlocks.forEach(wordBlock => {
+        wordBlock.classList.remove("solved");
+        wordBlock.classList.remove("selected");
+        wordBlock.classList.remove("green");
+        wordBlock.classList.remove("yellow");
+        wordBlock.classList.remove("blue");
+        wordBlock.classList.remove("purple");
+    });
+
+    // remove solved words from wordlist before shuffle
+    wordList = wordList.filter(word => !solvedWords.some(x => x.word.toLowerCase() === word.word.toLowerCase()));
+    console.log('filteredWordList', wordList);
     wordList = shuffleArray(wordList);
-    console.log(wordList);
+
+    // add solved words back to front of word list and put the colors back
+    solvedWords.sort((a, b) => a.color > b.color);
+    wordList.unshift(...solvedWords);
+
+    console.log('new wordlist', wordList);
 
     // Put words from wordList into wordBlocks
     for (let i = 0; i < wordBlocks.length; i++) {
         wordBlocks[i].innerText = wordList[i].word;
+        if (wordList[i].color == "green") {
+            wordBlocks[i].classList.add("green");
+            wordBlocks[i].classList.add("solved");
+        }
+        if (wordList[i].color == "yellow") {
+            wordBlocks[i].classList.add("yellow");
+            wordBlocks[i].classList.add("solved");
+        }
+        if (wordList[i].color == "blue") {
+            wordBlocks[i].classList.add("blue");
+            wordBlocks[i].classList.add("solved");
+        }
+        if (wordList[i].color == "purple") {
+            wordBlocks[i].classList.add("purple");
+            wordBlocks[i].classList.add("solved");
+        }
     }
 }
+
+/**
+ * Gets a color from an HTML element
+ * @param {HTMLElement} element
+ */
+function getColor(element) {
+    if (element.classList.contains("purple")) {
+        return "purple"
+    }
+    else if (element.classList.contains("blue")) {
+        return "blue"
+    }
+    else if (element.classList.contains("yellow")) {
+        return "yellow"
+    }
+    else if (element.classList.contains("green")) {
+        return "green"
+    }
+
+    return "";
+}
+
 
 //change colors when word block is selected 
 function toggleWordsSelected(event) {
@@ -72,9 +136,7 @@ function toggleWordsSelected(event) {
 
     clickedWord.classList.toggle("selected");
 
-    // check every element in list with class selected, if more than 4 enable submit button and disable clicking possible on words
-    let wrapper = document.getElementById("wrapper");
-
+    // check every element in list with class selected, if more than 4 enable submit button and disable clicking possible on word
     selectedWordBlocks = document.querySelectorAll('.selected');
 
     console.log('selectedWordBlocks', selectedWordBlocks);
@@ -100,8 +162,6 @@ function checkAnswers() {
         let word = wordBlock.innerText;
 
         let wordItem = wordList.find(wordItem => {
-            console.log('find word', word)
-            console.log('find wordItem', wordItem);
             return wordItem.word.toLowerCase() == word.toLowerCase();
         })
 
@@ -121,14 +181,10 @@ function checkAnswers() {
             return category == categoryName;
         });
 
-        console.log('filteredCategories', filteredCategories);
-
         if (filteredCategories.length > biggestCategoryCount) {
             biggestCategoryName = category;
             biggestCategoryCount = filteredCategories.length;
         }
-
-
     });
     console.log('biggesty category', biggestCategoryName, biggestCategoryCount);
 
@@ -136,9 +192,53 @@ function checkAnswers() {
         window.alert("One away...");
     } else if (biggestCategoryCount == 4) {
         window.alert("Correct!");
-        // CHange colors of correct divs (with mult solved classes in css) + deselect and disable submit button again
-    }
 
+        // Check how many we have solved. so we can give different colors.
+        solvedWordBlocks = document.querySelectorAll(".solved");
+
+        let color;
+
+        switch (solvedWordBlocks.length) {
+            case 0:
+                color = "green";
+                break;
+            case 4:
+                color = "yellow";
+                break;
+            case 8:
+                color = "blue";
+                break;
+            case 12:
+                color = "purple";
+                break;
+        }
+
+        // CHange colors of correct divs (with mult solved classes in css) + deselect and disable submit button again
+        selectedWordBlocks.forEach(element => {
+            element.classList.add(color);
+            element.classList.add("solved");
+            element.classList.remove("selected");
+        });
+        wrapper.classList.remove("saturated");
+        submitButton.disabled = true;
+
+        if (solvedWordBlocks.length == 12) {
+            setTimeout(() => {
+                window.alert("You won!");
+            }, 500);
+        }
+    }
+    else {
+        mistakes--;
+        mistakesElement.innerText = mistakes;
+
+        if (mistakes == 0) {
+            window.alert("Try again later");
+            submitButton.disabled = true;
+            shuffleButton.disabled = true;
+            wrapper.classList.add("lost");
+        }
+    }
 }
 
 wordBlocks.forEach(word => {
@@ -163,9 +263,13 @@ function shuffleArray(array) {
     return array;
 }
 
+let mistakesElement = document.getElementById("mistakes");
+let mistakes = 4;
 let shuffleButton = document.getElementById("shuffle");
 let submitButton = document.getElementById("submit");
 let selectedWordBlocks = document.querySelectorAll('.selected');
+let wrapper = document.getElementById("wrapper");
+let solvedWordBlocks = document.querySelectorAll(".solved");
 shuffleButton.addEventListener("click", wordBlockLoadWords);
 submitButton.addEventListener("click", checkAnswers);
 

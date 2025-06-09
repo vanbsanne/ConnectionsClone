@@ -78,3 +78,35 @@ button:disabled {
     cursor: not-allowed;
     pointer-events: none;
 }
+
+.lost>.row>.word {
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.solved {
+    cursor: not-allowed;
+    pointer-events: none;
+    color: black;
+}
+
+.yellow {
+    background-color: #f9df6d;
+}
+
+.green {
+    background-color: #a0c35a;
+}
+
+.blue {
+    background-color: #b0c4ef;
+}
+
+.purple {
+    background-color: #ba81c5;
+}
+
+#mistakes {
+    margin-left: 5px;
+    margin-right: 5px;
+}
