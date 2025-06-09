@@ -36,39 +36,57 @@ const initialCategories = [
         ]
     },
     {
-        group: "Sodas1",
+        group: "Languages",
         words: [
-            "Coke",
-            "Fanta",
-            "Sprite",
-            "Iced Tea"
+            "Dutch",
+            "French",
+            "German",
+            "Italian"
         ]
     },
     {
-        group: "Sodas2",
+        group: "MusicGenres",
         words: [
-            "Coke",
-            "Fanta",
-            "Sprite",
-            "Iced Tea"
+            "Rock&Roll",
+            "Jazz",
+            "Pop",
+            "HipHop"
         ]
     },
     {
-        group: "Sodas3",
+        group: "OperatingSystems",
         words: [
-            "Coke",
-            "Fanta",
-            "Sprite",
-            "Iced Tea"
+            "Windows",
+            "MacOs",
+            "Linux",
+            "TempleOS"
         ]
     },
     {
-        group: "Sodas4",
+        group: "Browsers",
         words: [
-            "Coke",
-            "Fanta",
-            "Sprite",
-            "Iced Tea"
+            "Chrome",
+            "Firefox",
+            "Safari",
+            "Opera"
         ]
-    }
+    },
+    {
+        group: "ThankYou",
+        words: [
+            "Danku",
+            "Merci",
+            "Thanks",
+            "Grazie"
+        ]
+    },
+    {
+        group: "StarWars",
+        words: [
+            "Wookies",
+            "Gungans",
+            "Jawa's",
+            "Twi'leks"
+        ]
+    },
 ]
